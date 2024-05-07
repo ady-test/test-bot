@@ -66,7 +66,7 @@ jobs:
                             `[See contributor page](${contributorUrl}) - ` +
                             `[Share on LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=${contributorUrl}) - ` +
                             `[Share on Twitter](http://www.twitter.com/share?url=${contributorUrl})\n\n` +
-                            `![https://twenty.com/api/contributors/og-image/${userName}][]`;
+                            `![Contributor Contributions][contributionsImage]`;
                 
             await github.rest.issues.createComment({
               owner: context.repo.owner,
@@ -74,3 +74,5 @@ jobs:
               issue_number: context.issue.number,
               body: message
             });
+
+            [contributionsImage]: https://twenty.com/api/contributors/og-image/${userName}
