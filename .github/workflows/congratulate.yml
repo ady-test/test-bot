@@ -1,0 +1,50 @@
+name: Congratulate Contributors
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  congratulate:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Fetch contributor data and comment
+        uses: actions/github-script@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          script: |
+            const github = require('@actions/github');
+            const context = github.context;
+
+            const response = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'all',
+              creator: context.actor
+            });
+
+            const prCount = response.data.length;
+            const userName = context.actor;
+
+            // Calculate rank (this is a placeholder, implement your ranking logic here)
+            const rankPercentage = Math.random() * 100;  // Replace with actual calculation
+
+            // Create a message
+            const message = `Thanks @${userName} for your contribution!\n` +
+                            `This marks your ${prCount}th PR on the repo. ` +
+                            `You're top ${rankPercentage.toFixed(2)}% of all our contributors 🎉\n` +
+                            `See [contributor page](URL_TO_CONTRIBUTOR_PAGE) ` +
+                            `[Share on LinkedIn](URL_TO_LINKEDIN_SHARE?content=...) ` +
+                            `[Share on Twitter](URL_TO_TWITTER_SHARE?text=...)`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: message
+            });
