@@ -35,9 +35,9 @@ jobs:
             const message = `Thanks @${userName} for your contribution!\n` +
                             `This marks your ${prCount}th PR on the repo. ` +
                             `You're top ${rankPercentage.toFixed(2)}% of all our contributors 🎉\n` +
-                            `See [contributor page](URL_TO_CONTRIBUTOR_PAGE) ` +
-                            `[Share on LinkedIn](URL_TO_LINKEDIN_SHARE?content=...) ` +
-                            `[Share on Twitter](URL_TO_TWITTER_SHARE?text=...)`;
+                            `See [contributor page](https://www.google.com) ` +
+                            `[Share on LinkedIn](https://www.google.com) ` +
+                            `[Share on Twitter](https://www.google.com)`;
 
             await github.rest.issues.createComment({
               owner: context.repo.owner,
