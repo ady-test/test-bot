@@ -46,7 +46,7 @@ jobs:
 
             // Create a message
             const message = `Thanks @${userName} for your contribution!\n` +
-                            `This marks your ${prCount}th PR on the repo. ` +
+                            `This marks your ${userContributionCount}th PR on the repo. ` +
                             `You're top ${rankPercentage.toFixed(2)}% of all our contributors 🎉\n` +
                             `See [contributor page](${contributorUrl}) - ` +
                             `[Share on LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=${contributorUrl}) - ` +
