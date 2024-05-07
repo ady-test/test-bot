@@ -5,7 +5,6 @@ on:
     types: [closed]
 
 permissions:
-  issues: write
   pull-requests: write
 
 jobs:
@@ -20,26 +19,38 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            const response = await github.rest.pulls.list({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'all',
-              creator: context.actor
-            });
+            const allPRs = await github.paginate(github.rest.pulls.list, {
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            state: 'closed',
+            per_page: 100
+            }, (response) => response.data.filter(pr => pr.merged_at));
 
-            const prCount = response.data.length;
+            const contributionsCount = allPRs.reduce((acc, pr) => {
+            const author = pr.user.login;
+            if (!['list', 'of', 'excluded', 'usernames'].includes(author)) {
+              acc[author] = (acc[author] || 0) + 1;
+              }
+            return acc;
+            }, {});
+
+            const sortedContributors = Object.entries(contributionsCount)
+            .map(([author, count]) => ({ author, count }))
+            .sort((a, b) => b.count - a.count);
+
             const userName = context.actor;
-
-            // Calculate rank (this is a placeholder, implement your ranking logic here)
-            const rankPercentage = Math.random() * 100;  // Replace with actual calculation
+            const userContributionCount = contributionsCount[userName] || 0;
+            const userRank = sortedContributors.findIndex(con => con.author === userName) + 1;
+            const rankPercentage = userRank / sortedContributors.length * 100;
+            const contributorUrl = `https://twenty.com/contributors/${userName}`;
 
             // Create a message
             const message = `Thanks @${userName} for your contribution!\n` +
                             `This marks your ${prCount}th PR on the repo. ` +
                             `You're top ${rankPercentage.toFixed(2)}% of all our contributors 🎉\n` +
-                            `See [contributor page](https://www.google.com) ` +
-                            `[Share on LinkedIn](https://www.google.com) ` +
-                            `[Share on Twitter](https://www.google.com)`;
+                            `See [contributor page](${contributorUrl}) - ` +
+                            `[Share on LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=${contributorUrl}) - ` +
+                            `[Share on Twitter](http://www.twitter.com/share?url=${contributorUrl})`;
 
             await github.rest.issues.createComment({
               owner: context.repo.owner,
