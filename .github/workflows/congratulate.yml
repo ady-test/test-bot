@@ -28,7 +28,23 @@ jobs:
 
             const contributionsCount = allPRs.reduce((acc, pr) => {
             const author = pr.user.login;
-            if (!['list', 'of', 'excluded', 'usernames'].includes(author)) {
+            if (!['dependabot',
+            'cyborch',
+            'emilienchvt',
+            'Samox',
+            'charlesBochet',
+            'gitstart-app',
+            'thaisguigon',
+            'lucasbordeau',
+            'magrinj',
+            'Weiko',
+            'gitstart-twenty',
+            'bosiraphael',
+            'martmull',
+            'FelixMalfait',
+            'thomtrp',
+            'Bonapara',
+            'nimraahmed'].includes(author)) {
               acc[author] = (acc[author] || 0) + 1;
               }
             return acc;
@@ -41,13 +57,13 @@ jobs:
             const userName = context.actor;
             const userContributionCount = contributionsCount[userName] || 0;
             const userRank = sortedContributors.findIndex(con => con.author === userName) + 1;
-            const rankPercentage = userRank / sortedContributors.length * 100;
+            const rankPercentage = Math.ceil(userRank / sortedContributors.length * 100);
             const contributorUrl = `https://twenty.com/contributors/${userName}`;
 
             // Create a message
             const message = `Thanks @${userName} for your contribution!\n` +
                             `This marks your ${userContributionCount}th PR on the repo. ` +
-                            `You're top ${rankPercentage.toFixed(2)}% of all our contributors 🎉\n` +
+                            `You're top ${rankPercentage.toFixed(0)}% of all our contributors 🎉\n` +
                             `See [contributor page](${contributorUrl}) - ` +
                             `[Share on LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=${contributorUrl}) - ` +
                             `[Share on Twitter](http://www.twitter.com/share?url=${contributorUrl})`;
