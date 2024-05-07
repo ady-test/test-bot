@@ -67,7 +67,7 @@ jobs:
                             `[Share on LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=${contributorUrl}) - ` +
                             `[Share on Twitter](http://www.twitter.com/share?url=${contributorUrl})`;
 
-            const bodyWithImage = message + '\n\n' + `<img src="https://twenty.com/api/contributors/og-image/${userName}" alt="Contributor Contributions" style={{ width: '100%', height: 'auto' }} />`;
+            const bodyWithImage = message + '\n\n' + `<img src="https://twenty.com/api/contributors/og-image/${userName}" alt="Contributor Contributions" style="width: 100%; height: auto;" />`;
                 
             await github.rest.issues.createComment({
               owner: context.repo.owner,
