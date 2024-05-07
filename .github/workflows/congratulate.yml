@@ -18,8 +18,6 @@ jobs:
 
       - name: Fetch contributor data and comment
         uses: actions/github-script@v5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           script: |
             const response = await github.rest.pulls.list({
