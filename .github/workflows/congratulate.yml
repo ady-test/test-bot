@@ -65,13 +65,12 @@ jobs:
                             `You're top ${rankPercentage.toFixed(0)}% of all our contributors 🎉\n` +
                             `[See contributor page](${contributorUrl}) - ` +
                             `[Share on LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=${contributorUrl}) - ` +
-                            `[Share on Twitter](http://www.twitter.com/share?url=${contributorUrl})`;
-
-            const bodyWithImage = message + '\n\n' + `<img src="https://twenty.com/api/contributors/og-image/ady-beraud" alt="Contributor Contributions" style="width: 0%; height: auto;" />`;
+                            `[Share on Twitter](http://www.twitter.com/share?url=${contributorUrl})\n\n`;
+                            `![Contributor Contributions](https://twenty.com/api/contributors/og-image/${userName})`
                 
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: bodyWithImage
+              body: message
             });
