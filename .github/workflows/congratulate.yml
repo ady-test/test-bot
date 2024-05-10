@@ -59,6 +59,7 @@ jobs:
                 const contributorUrl = `https://twenty.com/contributors/${userName}`;
 
                 const message = `Thanks @${userName} for your contribution!\n` +
+
                             `This marks your **${ordinalSuffix(stats.mergedPRsCount)}** PR on the repo. ` +
                             `You're **top ${stats.rank}%** of all our contributors 🎉\n` +
                             `[See contributor page](${contributorUrl}) - ` +
