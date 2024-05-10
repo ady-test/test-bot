@@ -25,7 +25,7 @@ jobs:
             state: 'closed',
             per_page: 100
             }, (response) => response.data.filter(pr => pr.merged_at));
-            console.log('All Merged PRs:', allPRs);
+            console.log('All Merged PRs:', allPRs.length);
 
 
             const contributionsCount = allPRs.reduce((acc, pr) => {
@@ -52,19 +52,19 @@ jobs:
             return acc;
             }, {});
 
-            console.log('contributorsCount', contributionsCount);
+            console.log('contributorsCount', contributionsCount.length);
 
             const sortedContributors = Object.entries(contributionsCount)
             .map(([author, count]) => ({ author, count }))
             .sort((a, b) => b.count - a.count);
 
-            console.log('sorted', sortedContributors);
+            console.log('sorted', sortedContributors.length);
 
 
             const userName = 'Kanav-Arora';
             const userContributionCount = contributionsCount[userName] || 0;
             const userRank = sortedContributors.findIndex(con => con.author === userName) + 1;
-            console.log('userRank', userRank);
+            console.log('userRank', userRank.length);
             const rankPercentage = Math.ceil(userRank / sortedContributors.length * 100);
             const contributorUrl = `https://twenty.com/contributors/${userName}`;
 
