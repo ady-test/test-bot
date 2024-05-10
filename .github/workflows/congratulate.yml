@@ -54,7 +54,7 @@ jobs:
             .map(([author, count]) => ({ author, count }))
             .sort((a, b) => b.count - a.count);
 
-            const userName = context.actor;
+            const userName = 'Kanav-Arora';
             const userContributionCount = contributionsCount[userName] || 0;
             const userRank = sortedContributors.findIndex(con => con.author === userName) + 1;
             const rankPercentage = Math.ceil(userRank / sortedContributors.length * 100);
