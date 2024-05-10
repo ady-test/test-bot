@@ -20,8 +20,8 @@ jobs:
         with:
           script: |
             const allPRs = await github.paginate(github.rest.pulls.list, {
-            owner: context.repo.owner,
-            repo: context.repo.repo,
+            owner: 'twentyhq',
+            repo: 'twenty',
             state: 'closed',
             per_page: 100
             }, (response) => response.data.filter(pr => pr.merged_at));
