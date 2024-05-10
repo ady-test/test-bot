@@ -60,12 +60,21 @@ jobs:
 
             console.log('sorted', sortedContributors.length);
 
+            const contributors = await github.paginate(github.rest.repos.listContributors, {
+            owner: 'twentyhq',
+            repo: 'twenty',
+            per_page: 100
+              });
+
+            const totalContributors = contributors.length;
+
+            console.log(totalContributors);
 
             const userName = 'Kanav-Arora';
             const userContributionCount = contributionsCount[userName] || 0;
             const userRank = sortedContributors.findIndex(con => con.author === userName) + 1;
             console.log('userRank', userRank);
-            const rankPercentage = Math.ceil(userRank / sortedContributors.length * 100);
+            const rankPercentage = Math.ceil(userRank / totalContributors * 100);
             const contributorUrl = `https://twenty.com/contributors/${userName}`;
 
             const message = `Thanks @${userName} for your contribution!\n` +
