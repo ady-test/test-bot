@@ -12,10 +12,19 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: "895608"
+          private-key: "SHA256:p8QLczy9nSbEIwtaF5/GohnTJMuu4dUnxcTIl82Cms4="
+
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Fetch contributor data and comment
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         uses: actions/github-script@v7
         with:
           script: |
