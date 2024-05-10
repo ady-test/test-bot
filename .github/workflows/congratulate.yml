@@ -21,6 +21,21 @@ jobs:
           script: |
             const userName = context.actor;
 
+            function ordinalSuffix(number) {
+              const j = number % 10,
+                    k = number % 100;
+              if (j == 1 && k != 11) {
+                return number + "st";
+              }
+              if (j == 2 && k != 12) {
+                return number + "nd";
+              }
+              if (j == 3 && k != 13) {
+                return number + "rd";
+              }
+              return number + "th";
+              }
+
             async function fetchContributorStats(username) {
               const apiUrl = `https://twenty.ngrok.app/api/contributors/contributorStats/${username}`;
              
@@ -43,42 +58,9 @@ jobs:
 
                 const contributorUrl = `https://twenty.com/contributors/${userName}`;
 
-                const allPRs = await github.paginate(github.rest.pulls.list, {
-                owner: 'twentyhq',
-                repo: 'twenty',
-                state: 'closed',
-                per_page: 100
-                }, (response) => response.data.filter(pr => pr.merged_at));
-
-                const contributionsCount = allPRs.reduce((acc, pr) => {
-                const author = pr.user.login;
-                if (!['dependabot',
-                'cyborch',
-                'emilienchvt',
-                'Samox',
-                'charlesBochet',
-                'gitstart-app',
-                'thaisguigon',
-                'lucasbordeau',
-                'magrinj',
-                'Weiko',
-                'gitstart-twenty',
-                'bosiraphael',
-                'martmull',
-                'FelixMalfait',
-                'thomtrp',
-                'Bonapara',
-                'nimraahmed'].includes(author)) {
-                  acc[author] = (acc[author] || 0) + 1;
-                  }
-                return acc;
-                }, {});
-
-                const userContributionCount = contributionsCount[userName] || 0;
-
                 const message = `Thanks @${userName} for your contribution!\n` +
-                            `This marks your ${userContributionCount}th PR on the repo. ` +
-                            `You're top ${stats.rank}% of all our contributors 🎉\n` +
+                            `This marks your **${ordinalSuffix(stats.mergedPRsCount)}** PR on the repo. ` +
+                            `You're **top ${stats.rank}%** of all our contributors 🎉\n` +
                             `[See contributor page](${contributorUrl}) - ` +
                             `[Share on LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=${contributorUrl}) - ` +
                             `[Share on Twitter](https://www.twitter.com/share?url=${contributorUrl})`
