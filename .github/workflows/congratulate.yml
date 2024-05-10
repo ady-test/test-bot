@@ -64,7 +64,7 @@ jobs:
             const userName = 'Kanav-Arora';
             const userContributionCount = contributionsCount[userName] || 0;
             const userRank = sortedContributors.findIndex(con => con.author === userName) + 1;
-            console.log('userRank', userRank.length);
+            console.log('userRank', userRank);
             const rankPercentage = Math.ceil(userRank / sortedContributors.length * 100);
             const contributorUrl = `https://twenty.com/contributors/${userName}`;
 
