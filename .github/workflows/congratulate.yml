@@ -21,6 +21,21 @@ jobs:
           script: |
             const userName = context.actor;
 
+            function ordinalSuffix(number) {
+              const j = number % 10,
+                    k = number % 100;
+              if (j == 1 && k != 11) {
+                return number + "st";
+              }
+              if (j == 2 && k != 12) {
+                return number + "nd";
+              }
+              if (j == 3 && k != 13) {
+                return number + "rd";
+              }
+              return number + "th";
+              }
+
             async function fetchContributorStats(username) {
               const apiUrl = `https://twenty.ngrok.app/api/contributors/contributorStats/${username}`;
              
@@ -44,8 +59,9 @@ jobs:
                 const contributorUrl = `https://twenty.com/contributors/${userName}`;
 
                 const message = `Thanks @${userName} for your contribution!\n` +
-                            `This marks your ${stats.mergedPRsCount}th PR on the repo. ` +
-                            `You're top ${stats.rank}% of all our contributors 🎉\n` +
+
+                            `This marks your **${ordinalSuffix(stats.mergedPRsCount)}** PR on the repo. ` +
+                            `You're **top ${stats.rank}%** of all our contributors 🎉\n` +
                             `[See contributor page](${contributorUrl}) - ` +
                             `[Share on LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=${contributorUrl}) - ` +
                             `[Share on Twitter](https://www.twitter.com/share?url=${contributorUrl})`
