@@ -43,41 +43,8 @@ jobs:
 
                 const contributorUrl = `https://twenty.com/contributors/${userName}`;
 
-                const allPRs = await github.paginate(github.rest.pulls.list, {
-                owner: 'twentyhq',
-                repo: 'twenty',
-                state: 'closed',
-                per_page: 100
-                }, (response) => response.data.filter(pr => pr.merged_at));
-
-                const contributionsCount = allPRs.reduce((acc, pr) => {
-                const author = pr.user.login;
-                if (!['dependabot',
-                'cyborch',
-                'emilienchvt',
-                'Samox',
-                'charlesBochet',
-                'gitstart-app',
-                'thaisguigon',
-                'lucasbordeau',
-                'magrinj',
-                'Weiko',
-                'gitstart-twenty',
-                'bosiraphael',
-                'martmull',
-                'FelixMalfait',
-                'thomtrp',
-                'Bonapara',
-                'nimraahmed'].includes(author)) {
-                  acc[author] = (acc[author] || 0) + 1;
-                  }
-                return acc;
-                }, {});
-
-                const userContributionCount = contributionsCount[userName] || 0;
-
                 const message = `Thanks @${userName} for your contribution!\n` +
-                            `This marks your ${userContributionCount}th PR on the repo. ` +
+                            `This marks your ${stats.mergedPRsCount}th PR on the repo. ` +
                             `You're top ${stats.rank}% of all our contributors 🎉\n` +
                             `[See contributor page](${contributorUrl}) - ` +
                             `[Share on LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=${contributorUrl}) - ` +
