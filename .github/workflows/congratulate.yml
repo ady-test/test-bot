@@ -64,6 +64,7 @@ jobs:
 
                 let stats;
                 const isFirstPR = pullRequests.length === 1;
+                console.log(isFirstPR);
 
                 if (!isFirstPR) {
                   stats = await fetchContributorStats(userName);
