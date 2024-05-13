@@ -52,13 +52,30 @@ jobs:
 
             async function run() {
               try {
-                const stats = await fetchContributorStats(userName);
+                const github = github.rest;
+                const pulls = await github.pulls.list({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  author: username,
+                  state: 'all',
+                  sort: 'updated',
+                  direction: 'desc',
+                  per_page: 2
+                });
+
+                const isFirstPR = pulls.data.length === 1;
+                
+                if (!isFirstPR) {
+                  const stats = await fetchContributorStats(userName);
+                } else {
+                  stats = { mergedPRsCount: 0, rank: 52 }
+                }
 
                 const contributorUrl = `https://twenty.com/contributors/${userName}`;
 
                 const message = `Thanks @${userName} for your contribution!\n` +
 
-                            `This marks your **${ordinalSuffix(stats.mergedPRsCount)}** PR on the repo. ` +
+                            `This marks your **${ordinalSuffix(stats.mergedPRsCount + 1)}** PR on the repo. ` +
                             `You're **top ${stats.rank}%** of all our contributors 🎉\n` +
                             `[See contributor page](${contributorUrl}) - ` +
                             `[Share on LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=${contributorUrl}) - ` +
