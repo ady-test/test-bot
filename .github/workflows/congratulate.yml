@@ -32,7 +32,8 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const userName = context.actor;
+            const pullRequest = github.context.payload.pull_request;
+            const userName = pullRequest.user.login;
 
             function ordinalSuffix(number) {
               const j = number % 10,
