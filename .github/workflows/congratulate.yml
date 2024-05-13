@@ -63,7 +63,7 @@ jobs:
                   });
 
                 let stats;
-                const isFirstPR = pullRequests.length === 1;
+                const isFirstPR = true;
                 console.log(isFirstPR);
 
                 if (!isFirstPR) {
