@@ -52,23 +52,23 @@ jobs:
 
             async function run() {
               try {
-                const github = github.rest;
-                const pulls = await github.pulls.list({
+                const { data: pullRequests } = await github.rest.pulls.list({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  author: username,
+                  creator: userName,
                   state: 'all',
-                  sort: 'updated',
+                  sort: 'created',
                   direction: 'desc',
                   per_page: 2
-                });
+                  });
 
-                const isFirstPR = pulls.data.length === 1;
-                
+                let stats;
+                const isFirstPR = pullRequests.length === 1;
+
                 if (!isFirstPR) {
-                  const stats = await fetchContributorStats(userName);
+                  stats = await fetchContributorStats(userName);
                 } else {
-                  stats = { mergedPRsCount: 0, rank: 52 }
+                  stats = { mergedPRsCount: 0, rank: 52 };
                 }
 
                 const contributorUrl = `https://twenty.com/contributors/${userName}`;
